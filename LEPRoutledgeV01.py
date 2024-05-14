@@ -3357,7 +3357,7 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
 
     elif selected_rhet_dim == 'logos':
         df = df_list[-1] #pd.concat(df_list, axis=0, ignore_index=True)
-        st.write( f" **{df.corpus.iloc[0]}** " )
+        #st.write( f" **{df.corpus.iloc[0]}** " )
         df = df.dropna(subset = 'premise')
         df['sentence_lemmatized'] = df['premise'].astype('str').apply(lambda x: re.sub(r"\W+", " ", str(x)))
         df = lemmatization(df, 'sentence_lemmatized', name_column = True)
@@ -8766,7 +8766,7 @@ else:
                         add_spacelines(1)
                         fig_cloud2 = dict_cond[n][0]
                         cc2 =  dict_cond[n][2]
-                        st.write("**{cc2}**")
+                        st.write(f"**{cc2}**")
                         st.pyplot(fig_cloud2)
 
         with tab_tab:
@@ -8775,7 +8775,7 @@ else:
                     with c:
                         add_spacelines(1)
                         cc2 =  dict_cond[n][2]
-                        st.write("**{cc2}**")
+                        st.write(f"**{cc2}**")
                         st.write(f'WordCloud frequency table: ')
                         df_cloud_words2 = dict_cond[n][1]
                         st.write(df_cloud_words2)
@@ -8786,7 +8786,7 @@ else:
                     with c:
                         add_spacelines(1)
                         cc2 =  dict_cond[n][2]
-                        st.write("**{cc2}**")
+                        st.write(f"**{cc2}**")
                         st.write(f'WordCloud frequency table: ')
                         freq_word_pos2 = dict_cond[n][-2]                    
                         st.write(f'Cases with **{freq_word_pos2}** words:')
