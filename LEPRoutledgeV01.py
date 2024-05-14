@@ -8732,7 +8732,6 @@ else:
 
     elif contents_radio3 == 'WordCloud' and contents_radio_type == 'Comparative Corpora Analysis':
         #generateWordCloud_log(corpora_list, rhetoric_dims = ['ethos', 'logos'], an_type = contents_radio_an_cat)
-        tab_plot, tab_tab, tab_case = st.tabs(['Plots', 'Tables', 'Cases'])
             
         rhetoric_dims = ['ethos', 'logos', 'pathos']
         selected_rhet_dim = st.selectbox("Choose a rhetoric category for a WordCloud", rhetoric_dims, index=0)
@@ -8759,6 +8758,7 @@ else:
             dict_cond[n] = [fig_cloud1, df_cloud_words1, freq_word_pos, selected_rhet_dim, dd]
             nn +=2
 
+        tab_plot, tab_tab, tab_case = st.tabs(['Plots', 'Tables', 'Cases'])            
         with tab_plot:
                 cols_columns = st.columns( int( len(corpora_list) / 2 ) )            
                 for n, c in enumerate(cols_columns):
