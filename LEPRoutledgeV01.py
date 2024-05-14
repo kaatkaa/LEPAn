@@ -3380,13 +3380,12 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
 
     fig_cloud1, df_cloud_words1, figure_cloud_words1 = wordcloud_lexeme(df_for_wordcloud, lexeme_threshold = threshold_cloud, analysis_for = str(label_cloud))
 
-    #_, cw2, _ = st.columns([1, 6, 1])
-    #with cw2:
-    st.pyplot(fig_cloud1)
+
+    #st.pyplot(fig_cloud1)
 
     add_spacelines(2)
 
-    st.write(f'WordCloud frequency table: ')
+    #st.write(f'WordCloud frequency table: ')
     if selected_rhet_dim == 'pathos_label':
 
         label_cloud = label_cloud.replace('attack', 'negative').replace('support', 'positive')
@@ -3402,7 +3401,7 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
     df_cloud_words1 = df_cloud_words1.sort_values(by = 'precision', ascending = False)
     df_cloud_words1 = df_cloud_words1.reset_index(drop = True)
     df_cloud_words1.index += 1
-    st.write(df_cloud_words1)
+    #st.write(df_cloud_words1)
 
 
     cols_odds1 = ['source', 'sentence', 'ethos_label', 'pathos_label', 'Target',
@@ -3421,9 +3420,10 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
     df['freq_words_'+label_cloud] = df.sentence_lemmatized.apply(lambda x: " ".join( set(x.split()).intersection(df_odds_pos_words) ))
     #st.write(df)
     add_spacelines(1)
-    st.write(f'Cases with **{freq_word_pos}** words:')
-    st.dataframe(df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) & (df[selected_rhet_dim] == label_cloud) ][cols_odds1])# .set_index('source')
-
+    #st.write(f'Cases with **{freq_word_pos}** words:')
+    dd = df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) & (df[selected_rhet_dim] == label_cloud) ][cols_odds1]
+    #st.dataframe(dd)# .set_index('source')
+    return fig_cloud1, df_cloud_words1, freq_word_pos, dd
 
 
 
@@ -8732,6 +8732,8 @@ else:
 
     elif contents_radio3 == 'WordCloud' and contents_radio_type == 'Comparative Corpora Analysis':
         #generateWordCloud_log(corpora_list, rhetoric_dims = ['ethos', 'logos'], an_type = contents_radio_an_cat)
+        tab_plot, tab_tab, tab_case = st.tabs(['Plots', 'Tables', 'Cases'])
+            
         rhetoric_dims = ['ethos', 'logos', 'pathos']
         selected_rhet_dim = st.selectbox("Choose a rhetoric category for a WordCloud", rhetoric_dims, index=0)
         add_spacelines(1)
@@ -8749,22 +8751,43 @@ else:
         threshold_cloud = st.slider('Select a precision value (threshold) for words in WordCloud', 0, 100, 80)
         st.info(f'Selected precision: **{threshold_cloud}**')
 
-
-        cols_columns = st.columns( int( len(corpora_list) / 2 ) )
         dict_cond = {}
         nn = 0
+        for n in range( int( len(corpora_list) / 2 ) ):
+            fig_cloud1, df_cloud_words1, freq_word_pos, dd = generateWordCloud_compare(corpora_list[nn:nn+2], rhetoric_dims = ['ethos', 'logos', 'pathos'],
+                    selected_rhet_dim = selected_rhet_dim, label_cloud=label_cloud, threshold_cloud=threshold_cloud)
+            dict_cond[n] = [fig_cloud1, df_cloud_words1, freq_word_pos, selected_rhet_dim, dd]
+            nn +=2
+
+        with tab_plot:
+        cols_columns = st.columns( int( len(corpora_list) / 2 ) )            
         for n, c in enumerate(cols_columns):
             with c:
                 add_spacelines(1)
-                generateWordCloud_compare(corpora_list[nn:nn+2], rhetoric_dims = ['ethos', 'logos', 'pathos'],
-                    selected_rhet_dim = selected_rhet_dim, label_cloud=label_cloud, threshold_cloud=threshold_cloud)
-                nn +=2
-        #with generateWordCloudc2:
-            #st.write(f"##### {corpora_list[-1].corpus.iloc[0]}")
-            #add_spacelines(1)
-            #generateWordCloud_sub_log(corpora_list[1::2], rhetoric_dims = ['ethos', 'logos'], an_type = contents_radio_an_cat,
-                #selected_rhet_dim = selected_rhet_dim, label_cloud=label_cloud, threshold_cloud=threshold_cloud)
+                fig_cloud2 = dict_cond[n][0]
+                st.pyplot(fig_cloud2)
 
+        with tab_tab:
+        cols_columns2 = st.columns( int( len(corpora_list) / 2 ) )            
+        for n, c in enumerate(cols_columns2):
+            with c:
+                add_spacelines(1)
+                st.write(f'WordCloud frequency table: ')
+                df_cloud_words1 = dict_cond[n][1]
+                st.write(df_cloud_words2)
+
+        with tab_case:
+        cols_columns3 = st.columns( int( len(corpora_list) / 2 ) )            
+        for n, c in enumerate(cols_columns3):
+            with c:
+                add_spacelines(1)
+                st.write(f'WordCloud frequency table: ')
+                freq_word_pos2 = dict_cond[n][-2]                    
+                st.write(f'Cases with **{freq_word_pos2}** words:')
+                dd2 = dict_cond[n][-1]
+                st.dataframe(dd2)
+
+        
 
     elif contents_radio_type == 'Single Corpus Analysis' and contents_radio3 == 'WordCloud':
         generateWordCloud(corpora_list, rhetoric_dims = ['ethos', 'logos', 'pathos'], an_type = contents_radio_an_cat)
