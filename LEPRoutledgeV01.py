@@ -8035,13 +8035,10 @@ with st.sidebar:
             #cor = pd.concat([cor1, cor5], axis=0, ignore_index=True)
             df_let['corpus'] = ds
             df_log['corpus'] = ds
+            corpora_list = []
             corpora_list.append(df_let)
             corpora_list.append(df_log)
-        else:
-            df_log = corpora_list_log[list(corpora_list_log.keys())[0]]
-            df_let = corpora_list_et[list(corpora_list_et.keys())[0]]
-            corpora_list.append(df_let)
-            corpora_list.append(df_log)
+
 
 
     if contents_radio_type != 'Home Page':
