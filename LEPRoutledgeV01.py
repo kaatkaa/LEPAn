@@ -8773,7 +8773,7 @@ else:
                     with c:
                         add_spacelines(1)
                         st.write(f'WordCloud frequency table: ')
-                        df_cloud_words1 = dict_cond[n][1]
+                        df_cloud_words2 = dict_cond[n][1]
                         st.write(df_cloud_words2)
 
         with tab_case:
