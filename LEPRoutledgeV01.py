@@ -3338,7 +3338,7 @@ def AntiHeroWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
             df['corpus'] = ds
         add_spacelines(1)
         st.write(f'Cases with **{freq_word_pos}** words:')
-        st.dataframe(df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) ][cols_odds1])# .set_index('source')
+        st.dataframe(df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) ].dropna(axis=1, how='all')[cols_odds1])# .set_index('source')
 
 
 
@@ -4226,8 +4226,8 @@ def TargetHeroScores_compare(data_list, singl_an = True):
         for i, k in enumerate(dict_cond.keys()):
             dff_selected = dff_selected[ dff_selected[str(k)].isin(dict_cond[k]) ]
         add_spacelines(2)
-        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).reset_index(drop=True), width = None)
-        st.write(f"No. of cases: {len(dff_selected)}.")
+        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).dropna(axis=1, how='all').reset_index(drop=True), width = None)
+        st.write(f"No. of cases: {len(dff_selected.dropna(axis=1, how='all'))}.")
 
 
 
@@ -4620,8 +4620,8 @@ def TargetHeroScores_compare_freq(data_list, singl_an = True):
         for i, k in enumerate(dict_cond.keys()):
             dff_selected = dff_selected[ dff_selected[str(k)].isin(dict_cond[k]) ]
         add_spacelines(2)
-        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).reset_index(drop=True), width = None)
-        st.write(f"No. of cases: {len(dff_selected)}.")
+        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).dropna(axis=1, how='all').reset_index(drop=True), width = None)
+        st.write(f"No. of cases: {len(dff_selected.dropna(axis=1, how='all'))}.")
 
 
 
@@ -4998,8 +4998,8 @@ def TargetHeroScores_compare_scor(data_list, singl_an = True):
         for i, k in enumerate(dict_cond.keys()):
             dff_selected = dff_selected[ dff_selected[str(k)].isin(dict_cond[k]) ]
         add_spacelines(2)
-        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).reset_index(drop=True), width = None)
-        st.write(f"No. of cases: {len(dff_selected)}.")
+        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).dropna(axis=1, how='all').reset_index(drop=True), width = None)
+        st.write(f"No. of cases: {len(dff_selected.dropna(axis=1, how='all'))}.")
 
 
 
@@ -5326,8 +5326,8 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
         for i, k in enumerate(dict_cond.keys()):
             dff_selected = dff_selected[ dff_selected[str(k)].isin(dict_cond[k]) ]
         add_spacelines(2)
-        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).reset_index(drop=True), width = None)
-        st.write(f"No. of cases: {len(dff_selected)}.")
+        st.dataframe(dff_selected[dff_columns].sort_values(by = select_columns).dropna(axis=1, how='all').reset_index(drop=True), width = None)
+        st.write(f"No. of cases: {len(dff_selected.dropna(axis=1, how='all'))}.")
 
 
 
@@ -5981,7 +5981,7 @@ def TargetHeroScores_compare_word(data_list, chbox_3rd, chbox_direct, singl_an =
         freq_word_pos = st.multiselect('Choose word(s) you would like to see data cases for', pos_list_freq, pos_list_freq[:2])
         df_odds_pos_words = set(freq_word_pos)
         df['freq_words_'+label_cloud] = df.sentence_lemmatized.apply(lambda x: " ".join( set(x.split()).intersection(df_odds_pos_words) ))
-        df = df.drop_duplicates()
+        df = df.drop_duplicates().dropna(axis=1, how='all')
         #st.write(df)
         if "&" in df.corpus.iloc[0]:
             ds = "Covid & ElectionsSM"
