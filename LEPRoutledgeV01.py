@@ -8780,6 +8780,8 @@ else:
                         st.write(df_cloud_words2)
 
         with tab_case:
+                cols_odds1 = ['source', 'sentence', 'ethos_label', 'pathos_label', 'Target',
+                         'freq_words_'+label_cloud]
                 cols_columns3 = st.columns( int( len(corpora_list) / 2 ) )            
                 for n, c in enumerate(cols_columns3):
                     with c:
