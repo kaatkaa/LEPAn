@@ -3379,7 +3379,7 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
         df[df[str(selected_rhet_dim)] == 'negative'])
 
     fig_cloud1, df_cloud_words1, figure_cloud_words1 = wordcloud_lexeme(df_for_wordcloud, lexeme_threshold = threshold_cloud, analysis_for = str(label_cloud))
-
+    cc = df.corpus.iloc[0]
 
     #st.pyplot(fig_cloud1)
 
@@ -3423,7 +3423,7 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
     #st.write(f'Cases with **{freq_word_pos}** words:')
     dd = df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) & (df[selected_rhet_dim] == label_cloud) ][cols_odds1]
     #st.dataframe(dd)# .set_index('source')
-    return fig_cloud1, df_cloud_words1, freq_word_pos, dd
+    return fig_cloud1, df_cloud_words1, freq_word_pos, dd, cc
 
 
 
@@ -8753,9 +8753,9 @@ else:
         dict_cond = {}
         nn = 0
         for n in range( int( len(corpora_list) / 2 ) ):
-            fig_cloud1, df_cloud_words1, freq_word_pos, dd = generateWordCloud_compare(corpora_list[nn:nn+2], rhetoric_dims = ['ethos', 'logos', 'pathos'],
+            fig_cloud1, df_cloud_words1, freq_word_pos, dd, cc = generateWordCloud_compare(corpora_list[nn:nn+2], rhetoric_dims = ['ethos', 'logos', 'pathos'],
                     selected_rhet_dim = selected_rhet_dim, label_cloud=label_cloud, threshold_cloud=threshold_cloud)
-            dict_cond[n] = [fig_cloud1, df_cloud_words1, freq_word_pos, selected_rhet_dim, dd]
+            dict_cond[n] = [fig_cloud1, df_cloud_words1, cc, freq_word_pos, dd]
             nn +=2
 
         tab_plot, tab_tab, tab_case = st.tabs(['Plots', 'Tables', 'Cases'])            
@@ -8765,6 +8765,8 @@ else:
                     with c:
                         add_spacelines(1)
                         fig_cloud2 = dict_cond[n][0]
+                        cc2 =  dict_cond[n][2]
+                        st.write("**{cc2}**")
                         st.pyplot(fig_cloud2)
 
         with tab_tab:
@@ -8772,6 +8774,8 @@ else:
                 for n, c in enumerate(cols_columns2):
                     with c:
                         add_spacelines(1)
+                        cc2 =  dict_cond[n][2]
+                        st.write("**{cc2}**")
                         st.write(f'WordCloud frequency table: ')
                         df_cloud_words2 = dict_cond[n][1]
                         st.write(df_cloud_words2)
@@ -8781,6 +8785,8 @@ else:
                 for n, c in enumerate(cols_columns3):
                     with c:
                         add_spacelines(1)
+                        cc2 =  dict_cond[n][2]
+                        st.write("**{cc2}**")
                         st.write(f'WordCloud frequency table: ')
                         freq_word_pos2 = dict_cond[n][-2]                    
                         st.write(f'Cases with **{freq_word_pos2}** words:')
