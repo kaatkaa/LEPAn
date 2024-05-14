@@ -3349,7 +3349,7 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
     if selected_rhet_dim != 'logos':
         df = df_list[0]
         df = clean_text(df, 'sentence_lemmatized', text_column_name = "sentence_lemmatized")
-        st.write( f" **{df.corpus.iloc[0]}** " )
+        #st.write( f" **{df.corpus.iloc[0]}** " )
         if not 'neutral' in df['ethos_label'].unique():
             df['ethos_label'] = df['ethos_label'].map(ethos_mapping)
         if not 'negative' in df['pathos_label'].unique():
@@ -3414,16 +3414,15 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
         df['sentence_lemmatized'] = df['sentence_lemmatized'].astype('str')
         df['logos'] = df['logos'].map({'Default Inference':'support', 'Default Conflict':'attack'})
 
-    pos_list_freq = df_cloud_words1.word.tolist()
-    freq_word_pos = st.multiselect('Choose word(s) you would like to see data cases for', pos_list_freq, pos_list_freq[:2])
-    df_odds_pos_words = set(freq_word_pos)
-    df['freq_words_'+label_cloud] = df.sentence_lemmatized.apply(lambda x: " ".join( set(x.split()).intersection(df_odds_pos_words) ))
-    #st.write(df)
-    add_spacelines(1)
+    #pos_list_freq = df_cloud_words1.word.tolist()
+    #freq_word_pos = st.multiselect('Choose word(s) you would like to see data cases for', pos_list_freq, pos_list_freq[:2])
+    #df_odds_pos_words = set(freq_word_pos)
+    #df['freq_words_'+label_cloud] = df.sentence_lemmatized.apply(lambda x: " ".join( set(x.split()).intersection(df_odds_pos_words) ))
+    #add_spacelines(1)
     #st.write(f'Cases with **{freq_word_pos}** words:')
-    dd = df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) & (df[selected_rhet_dim] == label_cloud) ][cols_odds1]
+    #dd = df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) & (df[selected_rhet_dim] == label_cloud) ][cols_odds1]
     #st.dataframe(dd)# .set_index('source')
-    return fig_cloud1, df_cloud_words1, freq_word_pos, dd, cc
+    return fig_cloud1, df_cloud_words1, df, cc
 
 
 
@@ -8753,9 +8752,9 @@ else:
         dict_cond = {}
         nn = 0
         for n in range( int( len(corpora_list) / 2 ) ):
-            fig_cloud1, df_cloud_words1, freq_word_pos, dd, cc = generateWordCloud_compare(corpora_list[nn:nn+2], rhetoric_dims = ['ethos', 'logos', 'pathos'],
+            fig_cloud1, df_cloud_words1, dd, cc = generateWordCloud_compare(corpora_list[nn:nn+2], rhetoric_dims = ['ethos', 'logos', 'pathos'],
                     selected_rhet_dim = selected_rhet_dim, label_cloud=label_cloud, threshold_cloud=threshold_cloud)
-            dict_cond[n] = [fig_cloud1, df_cloud_words1, cc, freq_word_pos, dd]
+            dict_cond[n] = [fig_cloud1, df_cloud_words1, cc, dd]
             nn +=2
 
         tab_plot, tab_tab, tab_case = st.tabs(['Plots', 'Tables', 'Cases'])            
@@ -8788,10 +8787,16 @@ else:
                         cc2 =  dict_cond[n][2]
                         st.write(f"**{cc2}**")
                         st.write(f'WordCloud frequency table: ')
-                        freq_word_pos2 = dict_cond[n][-2]                    
-                        st.write(f'Cases with **{freq_word_pos2}** words:')
-                        dd2 = dict_cond[n][-1]
-                        st.dataframe(dd2)
+                        df = dict_cond[n][-1]
+                        df_cloud_words1 =  dict_cond[n][1]
+                        pos_list_freq = df_cloud_words1.word.tolist()
+                        freq_word_pos = st.multiselect('Choose word(s) you would like to see data cases for', pos_list_freq, pos_list_freq[:2])
+                        df_odds_pos_words = set(freq_word_pos)
+                        df['freq_words_'+label_cloud] = df.sentence_lemmatized.apply(lambda x: " ".join( set(x.split()).intersection(df_odds_pos_words) ))
+                        add_spacelines(1)
+                        dd = df[ (df['freq_words_'+label_cloud].str.split().map(len) >= 1) & (df[selected_rhet_dim] == label_cloud) ][cols_odds1]                       
+                        st.write(f'Cases with **{freq_word_pos}** words:')
+                        st.dataframe(dd)
 
         
 
