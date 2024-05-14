@@ -3344,7 +3344,6 @@ def AntiHeroWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
 
 
 def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold_cloud, rhetoric_dims = ['ethos', 'pathos']):
-    add_spacelines(1)
 
     if selected_rhet_dim != 'logos':
         df = df_list[0]
@@ -3383,7 +3382,6 @@ def generateWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
 
     #st.pyplot(fig_cloud1)
 
-    add_spacelines(2)
 
     #st.write(f'WordCloud frequency table: ')
     if selected_rhet_dim == 'pathos_label':
@@ -8745,7 +8743,6 @@ else:
             selected_rhet_dim = selected_rhet_dim.replace("ethos", "ethos_label")
             label_cloud = label_cloud.replace("attack / negative", "attack").replace("support / positive", "support")
 
-        add_spacelines(1)
         threshold_cloud = st.slider('Select a precision value (threshold) for words in WordCloud', 0, 100, 80)
         st.info(f'Selected precision: **{threshold_cloud}**')
 
@@ -8762,7 +8759,6 @@ else:
                 cols_columns = st.columns( int( len(corpora_list) / 2 ) )            
                 for n, c in enumerate(cols_columns):
                     with c:
-                        add_spacelines(1)
                         fig_cloud2 = dict_cond[n][0]
                         cc2 =  dict_cond[n][2]
                         st.write(f"**{cc2}**")
@@ -8772,7 +8768,6 @@ else:
                 cols_columns2 = st.columns( int( len(corpora_list) / 2 ) )            
                 for n, c in enumerate(cols_columns2):
                     with c:
-                        add_spacelines(1)
                         cc2 =  dict_cond[n][2]
                         st.write(f"**{cc2}**")
                         st.write(f'WordCloud frequency table: ')
@@ -8785,10 +8780,8 @@ else:
                 cols_columns3 = st.columns( int( len(corpora_list) / 2 ) )            
                 for n, c in enumerate(cols_columns3):
                     with c:
-                        add_spacelines(1)
                         cc2 =  dict_cond[n][2]
                         st.write(f"**{cc2}**")
-                        st.write(f'WordCloud frequency table: ')
                         df = dict_cond[n][-1]
                         df_cloud_words1 =  dict_cond[n][1]
                         pos_list_freq = df_cloud_words1.word.tolist()
