@@ -8760,32 +8760,32 @@ else:
             nn +=2
 
         with tab_plot:
-        cols_columns = st.columns( int( len(corpora_list) / 2 ) )            
-        for n, c in enumerate(cols_columns):
-            with c:
-                add_spacelines(1)
-                fig_cloud2 = dict_cond[n][0]
-                st.pyplot(fig_cloud2)
+                cols_columns = st.columns( int( len(corpora_list) / 2 ) )            
+                for n, c in enumerate(cols_columns):
+                    with c:
+                        add_spacelines(1)
+                        fig_cloud2 = dict_cond[n][0]
+                        st.pyplot(fig_cloud2)
 
         with tab_tab:
-        cols_columns2 = st.columns( int( len(corpora_list) / 2 ) )            
-        for n, c in enumerate(cols_columns2):
-            with c:
-                add_spacelines(1)
-                st.write(f'WordCloud frequency table: ')
-                df_cloud_words1 = dict_cond[n][1]
-                st.write(df_cloud_words2)
+                cols_columns2 = st.columns( int( len(corpora_list) / 2 ) )            
+                for n, c in enumerate(cols_columns2):
+                    with c:
+                        add_spacelines(1)
+                        st.write(f'WordCloud frequency table: ')
+                        df_cloud_words1 = dict_cond[n][1]
+                        st.write(df_cloud_words2)
 
         with tab_case:
-        cols_columns3 = st.columns( int( len(corpora_list) / 2 ) )            
-        for n, c in enumerate(cols_columns3):
-            with c:
-                add_spacelines(1)
-                st.write(f'WordCloud frequency table: ')
-                freq_word_pos2 = dict_cond[n][-2]                    
-                st.write(f'Cases with **{freq_word_pos2}** words:')
-                dd2 = dict_cond[n][-1]
-                st.dataframe(dd2)
+                cols_columns3 = st.columns( int( len(corpora_list) / 2 ) )            
+                for n, c in enumerate(cols_columns3):
+                    with c:
+                        add_spacelines(1)
+                        st.write(f'WordCloud frequency table: ')
+                        freq_word_pos2 = dict_cond[n][-2]                    
+                        st.write(f'Cases with **{freq_word_pos2}** words:')
+                        dd2 = dict_cond[n][-1]
+                        st.dataframe(dd2)
 
         
 
