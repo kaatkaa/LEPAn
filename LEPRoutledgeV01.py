@@ -307,7 +307,7 @@ def UserRhetStrategy(data_list):
 def MainPage():
     #add_spacelines(2)
     with st.expander("Read abstract"):
-        add_spacelines(2)
+        add_spacelines(1)
         st.write("""Digitalisation is rapidly transforming our societies, transforming the dynamics of
                     our interactions, transforming the culture of our debates. One of the major threats
                     associated with digitalisation – which manifests itself in online misbehaviour such
@@ -333,24 +333,39 @@ def MainPage():
     with st.container():
         df_sum = pd.DataFrame(
                 {
-                        "Corpus": ['Covid', 'ElectionsSM'],
-                        "# Words": [30014, 30099], 
-                        "# ADU": [2706, 3827], 
-                        "# Posts": [963, 1317], 
-                        "# Speakers": [465, 1317], 
+                        "Corpus": ['Covid', 'ElectionsSM', 'Total'],
+                        "# Words": [30014, 30099, 30014 + 30099], 
+                        "# ADU": [2706, 3827, 2706 + 3827], 
+                        "# Posts": [963, 1317, 963 + 1317], 
+                        "# Speakers": [465, 1317, 465 + 1317], 
                 }
         )
 
         df_iaa = pd.DataFrame(
                 {
-                        'Covid': [ 440, 59, 630, 1233, 653, 152, 0.752, 0.618, 0.417 ], 
-                        'ElectionsSM' : [ 847, 492, 581, 1144, 1294, 190, 0.793, 0.817, 0.573 ],           
+                        'Annotation': [ 'Covid', 'ElectionsSM', 'Total/Average' ], 
+                        'L-' : [ 630, 581, 630 + 581],  
+                        'L+' : [ 1233, 1144, 1233 + 1144 ],  
+                        'IAA Logos' : [ 0.618, 0.817, np.mean([0.618, 0.817]) ],  
                         
-                }, index = ["# Ethos attack", "# Ethos support",  "# Logos attack",  "# Logos support",  "# Pathos negative", "# Pathos positive", 'IAA Logos', 'IAA Ethos', 'IAA Pathos' ]
+                        'E-' : [ 440, 847, 440 + 847 ],  
+                        'E+' : [ 59, 492, 59 + 492 ],  
+                        'IAA Ethos' : [ 0.752, 0.793, np.mean([0.752, 0.793]) ],  
+                        
+                        'P-' : [ 653, 1294, 653 + 1294 ],  
+                        'P+' : [ 152, 190, 152 + 190],  
+                        'IAA Pathos' : [ 0.417, 0.573, np.mean([0.417, 0.573]) ],    
+                        
+                        
+                }
         )            
-        st.write("**Data summary**")
-        st.dataframe(df_sum.set_index("Corpus"))
-        st.dataframe(df_iaa)
+        with st.expander("Data summary"):
+                add_spacelines(1)
+                st.write( "Datasets used in our technology of LEP Analytics." ) 
+                st.dataframe(df_sum.set_index("Corpus"))
+                add_spacelines(1)
+                st.write( "Annotation of logos, ethos and pathos used in Rhetoric Analytics." )                 
+                st.dataframe(df_iaa)
         add_spacelines(2)
         st.write("**[The New Ethos Lab](https://newethos.org/)**")
         #add_spacelines(1)
