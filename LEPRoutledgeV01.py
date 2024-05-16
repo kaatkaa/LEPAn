@@ -343,22 +343,27 @@ def MainPage():
 
         df_iaa = pd.DataFrame(
                 {
-                        'Annotation': ['Corpus', 'Covid', 'ElectionsSM', 'Total/Average' ], 
-                        '' : [ 'L-', 630, 581, 630 + 581],  
-                        'Logos' : [ 'L+', 1233, 1144, 1233 + 1144 ],  
-                        ' ' : [ 'IAA', 0.618, 0.817, np.mean([0.618, 0.817]) ],  
+                        'Annotation': [ 'Covid', 'ElectionsSM', 'Total/Average' ], 
+                        'Logos1' : [  630, 581, 630 + 581],  
+                        'Logos' : [  1233, 1144, 1233 + 1144 ],  
+                        'Logos2' : [  0.618, 0.817, np.mean([0.618, 0.817]) ],  
                         
-                        '' : ['E-', 440, 847, 440 + 847 ],  
-                        'Ethos' : ['E+', 59, 492, 59 + 492 ],  
-                        '' : [ 'IAA', 0.752, 0.793, np.mean([0.752, 0.793]) ],  
+                        'Ethos1' : [ 440, 847, 440 + 847 ],  
+                        'Ethos' : [ 59, 492, 59 + 492 ],  
+                        'Ethos2' : [  0.752, 0.793, np.mean([0.752, 0.793]) ],  
                         
-                        '' : [  'P-', 653, 1294, 653 + 1294 ],  
-                        'Pathos' : [ 'P+', 152, 190, 152 + 190],  
-                        '' : [ 'IAA', 0.417, 0.573, np.mean([0.417, 0.573]) ],    
+                        'Pathos1' : [  653, 1294, 653 + 1294 ],  
+                        'Pathos' : [  152, 190, 152 + 190],  
+                        'Pathos2' : [  0.417, 0.573, np.mean([0.417, 0.573]) ],    
                         
                         
                 }
         )            
+        df_iaa.columns = [ ('Annotation', 'corpus'), ('Logos', 'L-'), ('Logos', 'L+'), ('Logos', 'IAA L' ), 
+                      ('Ethos', 'E-'), ('Ethos', 'E+'), ('Ethos', 'IAA E' ), 
+                      ('Pathos', 'P-'), ('Pathos', 'P+'), ('Pathos', 'IAA P' )  ]
+        df_iaa.columns = pd.MultiIndex.from_tuples(df_iaa.columns, names=[' ','Categories'])
+
         with st.expander("Data summary"):
                 add_spacelines(1)
                 st.write( "Datasets used in our technology of LEP Analytics." ) 
