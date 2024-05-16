@@ -343,18 +343,18 @@ def MainPage():
 
         df_iaa = pd.DataFrame(
                 {
-                        'Annotation': [ 'Covid', 'ElectionsSM', 'Total/Average' ], 
-                        'L-' : [ 630, 581, 630 + 581],  
-                        'L+' : [ 1233, 1144, 1233 + 1144 ],  
-                        'IAA Logos' : [ 0.618, 0.817, np.mean([0.618, 0.817]) ],  
+                        'Annotation': ['Corpus', 'Covid', 'ElectionsSM', 'Total/Average' ], 
+                        '' : [ 'L-', 630, 581, 630 + 581],  
+                        'Logos' : [ 'L+', 1233, 1144, 1233 + 1144 ],  
+                        ' ' : [ 'IAA', 0.618, 0.817, np.mean([0.618, 0.817]) ],  
                         
-                        'E-' : [ 440, 847, 440 + 847 ],  
-                        'E+' : [ 59, 492, 59 + 492 ],  
-                        'IAA Ethos' : [ 0.752, 0.793, np.mean([0.752, 0.793]) ],  
+                        '' : ['E-', 440, 847, 440 + 847 ],  
+                        'Ethos' : ['E+', 59, 492, 59 + 492 ],  
+                        '' : [ 'IAA', 0.752, 0.793, np.mean([0.752, 0.793]) ],  
                         
-                        'P-' : [ 653, 1294, 653 + 1294 ],  
-                        'P+' : [ 152, 190, 152 + 190],  
-                        'IAA Pathos' : [ 0.417, 0.573, np.mean([0.417, 0.573]) ],    
+                        '' : [  'P-', 653, 1294, 653 + 1294 ],  
+                        'Pathos' : [ 'P+', 152, 190, 152 + 190],  
+                        '' : [ 'IAA', 0.417, 0.573, np.mean([0.417, 0.573]) ],    
                         
                         
                 }
@@ -365,7 +365,7 @@ def MainPage():
                 st.dataframe(df_sum.set_index("Corpus"))
                 add_spacelines(1)
                 st.write( "Annotation of logos, ethos and pathos used in Rhetoric Analytics." )                 
-                st.dataframe(df_iaa)
+                st.dataframe( df_iaa.set_index('Annotation') )
         add_spacelines(2)
         st.write("**[The New Ethos Lab](https://newethos.org/)**")
         #add_spacelines(1)
