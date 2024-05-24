@@ -333,7 +333,7 @@ def MainPage():
     with st.container():
         df_sum = pd.DataFrame(
                 {
-                        "Corpus": ['Covid', 'ElectionsSM', 'Total'],
+                        "Corpus": ['PolarIs1', 'US2016reddit', 'Total'],
                         "# Words": [30014, 30099, 30014 + 30099], 
                         "# ADU": [2706, 3827, 2706 + 3827], 
                         "# Posts": [963, 1317, 963 + 1317], 
@@ -343,7 +343,7 @@ def MainPage():
 
         df_iaa = pd.DataFrame(
                 {
-                        'Corpus': [ 'Covid', 'ElectionsSM', 'Total/Average' ], 
+                        'Corpus': [ 'PolarIs1', 'US2016reddit', 'Total/Average' ], 
                         'L-' : [  630, 581, 630 + 581],  
                         'L+' : [  1233, 1144, 1233 + 1144 ],  
                         'IAA L' : [  0.618, 0.817, np.mean([0.618, 0.817]) ],  
@@ -3247,7 +3247,7 @@ def AntiHeroWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
 
 
     if "&" in df.corpus.iloc[0]:
-        ds = "Covid & ElectionsSM"
+        ds = "PolarIs1 & US2016reddit"
         df['corpus'] = ds
 
 
@@ -3367,7 +3367,7 @@ def AntiHeroWordCloud_compare(df_list, selected_rhet_dim, label_cloud, threshold
         df['freq_words_'+label_cloud] = df.sentence_lemmatized.apply(lambda x: " ".join( set(x.split()).intersection(df_odds_pos_words) ))
         #st.write(df)
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         add_spacelines(1)
         st.write(f'Cases with **{freq_word_pos}** words:')
@@ -4112,7 +4112,7 @@ def TargetHeroScores_compare(data_list, singl_an = True):
         #df_dist_hist_all5 = df_dist_hist_all5.sort_values(by = [ 'corpus', 'label', 'number', ], ascending=[True, False, False])
 
         #df_dist_hist_all = pd.concat([df_dist_hist_all5.iloc[:12], df_dist_hist_all1.iloc[:12]], axis=0, ignore_index=True)
-        #df_dist_hist_all.corpus = df_dist_hist_all.corpus.map( {'Covid':"PolarIs1", 'ElectionsSM':'PolarIs5'} )
+        #df_dist_hist_all.corpus = df_dist_hist_all.corpus.map( {'PolarIs1':"PolarIs1", 'US2016reddit':'PolarIs5'} )
 
 
         #df_dist_hist_all.loc[df_dist_hist_all.score < 0, 'score'] = df_dist_hist_all.loc[df_dist_hist_all.score < 0, 'score'] * -1
@@ -4232,7 +4232,7 @@ def TargetHeroScores_compare(data_list, singl_an = True):
 
         df.Target = df.Target.astype('str')
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         dff_columns = ['map_ID', 'sentence', 'source', 'ethos_name', 'Target', 'pathos_name']# , 'conversation_id','date'
 
@@ -4301,7 +4301,7 @@ def TargetHeroScores_compare_freq(data_list, singl_an = True):
         df = data.copy()
         ds = df['corpus'].iloc[0]
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         if not 'attack' in df['ethos_label'].unique():
             df['ethos_label'] = df['ethos_label'].map(ethos_mapping)
@@ -4462,7 +4462,7 @@ def TargetHeroScores_compare_freq(data_list, singl_an = True):
 
     sns.set(font_scale=1.5, style='whitegrid')
     if "&" in df_dist_ethos_all.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df_dist_ethos_all['corpus'] = ds
 
     df = pd.concat( data_list, axis=0, ignore_index=True )
@@ -4497,7 +4497,7 @@ def TargetHeroScores_compare_freq(data_list, singl_an = True):
     sns.set(font_scale=1.35, style='whitegrid')
 
     if "&" in df_dist_hist_all.corpus.iloc[0]:
-        ds = "Covid & ElectionsSM"
+        ds = "PolarIs1 & US2016reddit"
         df_dist_hist_all['corpus'] = ds
 
     df_dist_hist_all = df_dist_hist_all.rename(columns = {'ethos_label':'label'})
@@ -4624,7 +4624,7 @@ def TargetHeroScores_compare_freq(data_list, singl_an = True):
         df = df.drop_duplicates()
         df["Target"] = df["Target"].str.replace('Government', 'government')
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         dff_columns = [ 'sentence', 'source', 'ethos_name', 'Target', 'pathos_name']# , 'conversation_id','date'
         df['ethos_name'] = df['ethos_label']
@@ -4831,7 +4831,7 @@ def TargetHeroScores_compare_scor(data_list, singl_an = True):
         df_dist_ethos_all = pd.concat([df_dist_ethos_all, up_data_dict[k_sub]], axis=0, ignore_index=True)
 
     if "&" in df_dist_ethos_all.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df_dist_ethos_all['corpus'] = ds
 
     sns.set(font_scale=1.5, style='whitegrid')
@@ -4868,7 +4868,7 @@ def TargetHeroScores_compare_scor(data_list, singl_an = True):
 
     df_dist_hist_all = df_dist_hist_all.rename(columns = {'ethos_label':'label'})
     if "&" in df_dist_hist_all.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df_dist_hist_all['corpus'] = ds
     sns.set(font_scale=1, style='whitegrid')
     df_dist_hist_all_base = df_dist_hist_all.groupby('label', as_index=False).score.mean().round(2)
@@ -4952,7 +4952,7 @@ def TargetHeroScores_compare_scor(data_list, singl_an = True):
 
         df_dist_hist_all = df_dist_hist_all.melt(['Target', 'label', 'corpus'])
         if "&" in df_dist_hist_all.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df_dist_hist_all['corpus'] = ds
 
         #df_dist_hist_all = df_dist_hist_all.sort_values(by = [ 'corpus', 'variable', 'label', 'value' ], ascending=[True,True, False, False])
@@ -5001,7 +5001,7 @@ def TargetHeroScores_compare_scor(data_list, singl_an = True):
         df = df.drop_duplicates()
         df["Target"] = df["Target"].str.replace('Government', 'government')
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         dff_columns = [ 'sentence', 'source', 'ethos_name', 'Target', 'pathos_name']# , 'conversation_id','date'
 
@@ -5157,7 +5157,7 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
         df_dist_ethos_all = pd.concat([df_dist_ethos_all, up_data_dict[k_sub]], axis=0, ignore_index=True)
 
     if "&" in df_dist_ethos_all.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df_dist_ethos_all['corpus'] = ds
 
     sns.set(font_scale=1.5, style='whitegrid')
@@ -5196,7 +5196,7 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
 
     df_dist_hist_all = df_dist_hist_all.rename(columns = {'ethos_label':'label'})
     if "&" in df_dist_hist_all.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df_dist_hist_all['corpus'] = ds
     sns.set(font_scale=1, style='whitegrid')
     df_dist_hist_all_base = df_dist_hist_all.groupby('label', as_index=False).score.mean().round(2)
@@ -5287,7 +5287,7 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
 
         df_dist_hist_all = df_dist_hist_all.melt(['Target', 'label', 'corpus'])
         if "&" in df_dist_hist_all.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df_dist_hist_all['corpus'] = ds
 
         #df_dist_hist_all = df_dist_hist_all.sort_values(by = [ 'corpus', 'variable', 'label', 'value' ], ascending=[True,True, False, False])
@@ -5328,7 +5328,7 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
 
         df.Target = df.Target.astype('str')
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         dff_columns = [ 'sentence', 'source', 'ethos_name', 'Target', 'pathos_name']# , 'conversation_id','date'
         df = df.drop_duplicates()
@@ -5571,7 +5571,7 @@ def TargetHeroScores_compare_prof(data_list, singl_an = True):
                     df = data_list[n].copy()
                     df = df.drop_duplicates()
                     if "&" in df['corpus'].iloc[0]:
-                        ds = "Covid & ElectionsSM"
+                        ds = "PolarIs1 & US2016reddit"
                         df['corpus'] = ds
                     ds = df['corpus'].iloc[0]
                     st.write("##### Corpus "+ ds )
@@ -5612,7 +5612,7 @@ def TargetHeroScores_compare_prof(data_list, singl_an = True):
                     df_dist_ethos = df_target.sort_values(by = 'ethos')
                     df_dist_ethos['corpus'] = ds
                     if "&" in ds:
-                        ds = "Covid & ElectionsSM"
+                        ds = "PolarIs1 & US2016reddit"
                         df_dist_ethos['corpus'] = ds
 
                     sns.set(font_scale=1.35, style='whitegrid')
@@ -5651,7 +5651,7 @@ def TargetHeroScores_compare_prof(data_list, singl_an = True):
         else:
             df = data_list[0]
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
 
         if not 'negative' in df['pathos_label'].unique():
@@ -5895,7 +5895,7 @@ def TargetHeroScores_compare_word(data_list, chbox_3rd, chbox_direct, singl_an =
     df0 = df.copy()
 
     if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
 
     sns.set(font_scale=1.35, style='whitegrid')
@@ -6014,7 +6014,7 @@ def TargetHeroScores_compare_word(data_list, chbox_3rd, chbox_direct, singl_an =
         df = df.drop_duplicates().dropna(axis=1, how='all')
         #st.write(df)
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         add_spacelines(1)
         st.write(f'Cases with **{freq_word_pos}** words:')
@@ -6696,7 +6696,7 @@ def distribution_plot_compare_logos(data_list, an_type):
         df = data.copy()
         ds = df['corpus'].iloc[0]
         if '&' in ds:
-            ds = 'Covid & ElectionsSM'
+            ds = 'PolarIs1 & US2016reddit'
         df['corpus'] = ds
 
         #st.dataframe(df)
@@ -7253,7 +7253,7 @@ def distribution_plot_compare_logos(data_list, an_type):
 
         df = pd.concat( data_list, axis=0, ignore_index=True )
         if "&" in df.corpus.iloc[0]:
-            ds = "Covid & ElectionsSM"
+            ds = "PolarIs1 & US2016reddit"
             df['corpus'] = ds
         #st.write(df)
         #st.write(df.info())
@@ -7870,8 +7870,8 @@ with st.sidebar:
     elif contents_radio_type == 'Comparative Corpora Analysis':
         add_spacelines(2)
         st.write('Choose corpora')
-        box_pol1_log = st.checkbox("Covid", value=True)
-        box_pol5_log = st.checkbox("ElectionsSM", value=True)
+        box_pol1_log = st.checkbox("PolarIs1", value=True)
+        box_pol5_log = st.checkbox("US2016reddit", value=True)
 
         corpora_list = []
         corpora_list_et = {}
@@ -7894,7 +7894,7 @@ with st.sidebar:
                 cor1['Target'] = cor1['Target'].astype('str')
                 cor1['source'] = cor1['source'].astype('str').apply(lambda x: ["@"+str(x) if not "@" in x else x][0])
                 cor1['Target'] = cor1['Target'].apply(lambda x: ["@"+str(x) if (not "@" in x and x in cor1_src) else x][0])
-                cor1['corpus'] = "Covid"
+                cor1['corpus'] = "PolarIs1"
                 cor1['kind'] = "ethos"
                 cor1.loc[cor1["Target"] == "@CNN", 'Target'] = 'CNN'
                 cor1.loc[cor1["Target"] == "the unvaccinated", 'Target'] = 'unvaccinated'
@@ -7919,7 +7919,7 @@ with st.sidebar:
                 cor1 = cor1.drop_duplicates('id_connection')
                 cor1 = pd.concat([cor1, cor11_2 ], axis = 0, ignore_index = True)
                 cor1['kind'] = "logos"
-                cor1['corpus'] = "Covid"
+                cor1['corpus'] = "PolarIs1"
                 corpora_list.append(cor1)
                 summary_corpora_list.append(cor1)
                 corpora_list_log[cor1['corpus'].iloc[0]] = cor1
@@ -7929,7 +7929,7 @@ with st.sidebar:
                 cor55 = load_data(us16)
                 cor5 = cor55.copy()
                 cor5['Target'] = cor5['Target'].astype('str')
-                cor5['corpus'] = "ElectionsSM"
+                cor5['corpus'] = "US2016reddit"
                 cor5['source'] = cor5['source'].astype('str')
                 cor5['kind'] = "ethos"
                 corpora_list.append(cor5)
@@ -7956,7 +7956,7 @@ with st.sidebar:
                 cor5['locution_premise'] =  cor5.groupby(['id_connection'])[['locution_premise']].transform(lambda x: " ".join(x) )
                 cor5 = cor5.drop_duplicates('id_connection')
                 cor1 = pd.concat([cor5, cor11_2 ], axis = 0, ignore_index = True)
-                cor1['corpus'] = "ElectionsSM"
+                cor1['corpus'] = "US2016reddit"
                 cor1['kind'] = "logos"
                 corpora_list.append(cor1)
                 summary_corpora_list.append(cor1)
@@ -7966,8 +7966,8 @@ with st.sidebar:
     else:
         add_spacelines(2)
         st.write('Choose corpora')
-        box_pol1_log = st.checkbox("Covid", value=True)
-        box_pol5_log = st.checkbox("ElectionsSM", value=True)
+        box_pol1_log = st.checkbox("PolarIs1", value=True)
+        box_pol5_log = st.checkbox("US2016reddit", value=True)
 
         add_spacelines(1)
         st.write( " ********************************** " )
@@ -7985,7 +7985,7 @@ with st.sidebar:
             cor1['Target'] = cor1['Target'].astype('str')
             cor1['source'] = cor1['source'].astype('str').apply(lambda x: ["@"+str(x) if not "@" in x else x][0])
             cor1['Target'] = cor1['Target'].apply(lambda x: ["@"+str(x) if (not "@" in x and x in cor1_src) else x][0])
-            cor1['corpus'] = "Covid" # Ethos
+            cor1['corpus'] = "PolarIs1" # Ethos
             cor1['kind'] = "ethos"
             corpora_list_et[cor1['corpus'].iloc[0]] = cor1
             corpora_list.append(cor1)
@@ -8009,7 +8009,7 @@ with st.sidebar:
             cor1 = cor1.drop_duplicates('id_connection')
             cor1 = pd.concat([cor1, cor11_2 ], axis = 0, ignore_index = True)
             cor1['kind'] = "logos"
-            cor1['corpus'] = "Covid"
+            cor1['corpus'] = "PolarIs1"
             corpora_list.append(cor1)
             summary_corpora_list.append(cor1)
             corpora_list_log[cor1['corpus'].iloc[0]] = cor1
@@ -8019,7 +8019,7 @@ with st.sidebar:
             cor55 = load_data(us16)
             cor5 = cor55.copy()
             cor5['Target'] = cor5['Target'].astype('str')
-            cor5['corpus'] = "ElectionsSM"
+            cor5['corpus'] = "US2016reddit"
             cor5['source'] = cor5['source'].astype('str')
             cor5['kind'] = "ethos"
             corpora_list_et[cor5['corpus'].iloc[0]] = cor5
@@ -8048,7 +8048,7 @@ with st.sidebar:
             cor5['locution_premise'] =  cor5.groupby(['id_connection'])[['locution_premise']].transform(lambda x: " ".join(x) )
             cor5 = cor5.drop_duplicates('id_connection')
             cor1 = pd.concat([cor5, cor11_2 ], axis = 0, ignore_index = True)
-            cor1['corpus'] = "ElectionsSM"
+            cor1['corpus'] = "US2016reddit"
             cor1['kind'] = "logos"
             corpora_list.append(cor1)
             summary_corpora_list.append(cor1)
