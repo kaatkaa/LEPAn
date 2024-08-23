@@ -5812,18 +5812,6 @@ else:
         TargetHeroScores_compare_scor2(data_list = corpora_list, singl_an = False)
 
 
-    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains Profile":
-        if len(corpora_list) == 4:
-            corpora_list0 = corpora_list[0]
-            corpora_list1 = corpora_list[-2]
-            corpora_list = [corpora_list0, corpora_list1]
-        elif len(corpora_list) == 2:
-            corpora_list0 = corpora_list[0]
-            corpora_list = corpora_list0
-        TargetHeroScores_compare_prof(data_list = corpora_list, singl_an = False)
-
-
-
     elif contents_radio3 == 'WordCloud' and contents_radio_type == 'Comparative Corpora Analysis':
         #generateWordCloud_log(corpora_list, rhetoric_dims = ['ethos', 'logos'], an_type = contents_radio_an_cat)
             
