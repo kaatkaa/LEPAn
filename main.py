@@ -1,4 +1,4 @@
-
+# old
 # python -m streamlit run lepanV01R.py
 
 vac_red = r"PolarIs1_VaccRed_up_ext.xlsx"   #r"PolarIs1_VaccRed.xlsx"
@@ -2358,7 +2358,6 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
             targets_limit = df['Target'].dropna().unique()
             targets_limit = [t for t in targets_limit if "@" in t]
             df = df[df.Target.isin(targets_limit)]
-            target_shared[n] = set(df["Target"].unique())
             if len(targets_limit) < 2:
                 st.error(f'No cases of **{contents_radio_heroes}** found in the chosen corpora.')
                 st.stop()
@@ -2366,7 +2365,6 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
             targets_limit = df['Target'].dropna().unique()
             targets_limit = [t for t in targets_limit if not "@" in t]
             df = df[df.Target.isin(targets_limit)]
-            target_shared[n] = set(df["Target"].unique())
             if len(targets_limit) < 2:
                 st.error(f'No cases of **{contents_radio_heroes}** found in the chosen corpora.')
                 st.stop()
@@ -2508,17 +2506,6 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
         f_dist_ethoshist.set(xlabel = '', title = 'Number of (un)-favourable appeals to villains & heroes')
 
 
-    singl_an = True
-    if singl_an:
-        if len( list(target_shared.keys()) )  > 1:
-            target_shared_list = []
-            kk = list(target_shared.keys())
-            target_shared_list = list( set(target_shared[kk[0]]).intersection(set(target_shared[kk[1]])) )
-        else:
-            target_shared_list = target_shared[0]
-        selected_target = st.selectbox("Choose a target entity you would like to analyse", set(target_shared_list))
-
-  
     heroes_tab1, heroes_tab2, heroes_tab_explore = st.tabs(['Bar-chart', 'Tables',  'Cases'])
 
     with heroes_tab2:
@@ -2561,32 +2548,13 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
 
                 df_dist_hist_all_0.Target = df_dist_hist_all_0.Target.apply(lambda x: "_".join(x.split()))
 
-              
-                add_spacelines(2)
-                st.write( "##### Profile"  )
-                if "&" in df.corpus.iloc[0]:
-                    ds = "Covid & ElectionsSM"
-                    df['corpus'] = ds
-        
-                if not 'negative' in df['pathos_label'].unique():
-                    df['pathos_label'] = df['pathos_label'].map(valence_mapping).str.replace('neutral p', 'neutral')
-                if not 'neutral' in df['ethos_label'].unique():
-                    df['ethos_label'] = df['ethos_label'].map(ethos_mapping)
-        
-                df['pathos_name'] = df['pathos_label']
-                df.loc[df['pathos_name'].isna(), 'pathos_name'] = df.loc[df['pathos_name'].isna(), 'pathos_label']
-                df.loc[~(df['source'].str.startswith("@")), 'source'] = df.loc[~(df['source'].str.startswith("@")), 'source'].apply(lambda x: "@" + x)
-                df = df.drop_duplicates()
-        
-                cols = ['sentence', 'ethos_label', 'source', 'Target', 'pathos_name', 'corpus'] #, 'date', 'conversation_id'
-                if len(df[df.Target == str(selected_target)]) == 1:
-                    st.write(f"{len(df[df.Target == str(selected_target)])} case of ethotic statements towards **{selected_target}** ")
-                else:
-                    st.write(f"{len(df[df.Target == str(selected_target)])} cases of ethotic statements towards **{selected_target}** ")
-                if not "neutral" in df['pathos_label'].unique():
-                    df['pathos_label'] = df['pathos_label'].map(valence_mapping)
-                st.dataframe(df[df.Target == str(selected_target)][cols].set_index('source').rename(columns={'ethos_label':'ethos', 'pathos_label':'pathos'}), width = None)
-                add_spacelines(1)
+                #st.write( "##### Cloud: names of heroes and villains" )
+                #f_att0, _ = make_word_cloud(" ".join(df_dist_hist_all_0[df_dist_hist_all_0.label == 'villains'].Target.values), 800, 500, '#1E1E1E', 'Reds')
+                #f_sup0, _ = make_word_cloud(" ".join(df_dist_hist_all_0[df_dist_hist_all_0.label == 'heroes'].Target.values), 800, 500, '#1E1E1E', 'Greens')
+
+                #st.pyplot(f_sup0)
+                #add_spacelines(2)
+                #st.pyplot(f_att0)
 
 
     with heroes_tab1:
@@ -2596,6 +2564,7 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
 
         add_spacelines(2)
         st.write( "##### Detailed" )
+        add_spacelines(1)
         #st.write(df_dist_hist_all)
         cutoff_neg = st.slider('Select a cut-off number for villains', 1, 25, 4)
         cutoff_pos = st.slider('Select a cut-off number for heroes', 1, 25, 2)
@@ -2639,85 +2608,6 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
         plt.legend(bbox_to_anchor = (xv, 1.2), ncols=3, loc='upper center',)
         st.pyplot(f_dist_ethoshist_barh)
 
-
-        add_spacelines(2)
-        st.write( "##### Profile" )
-        cols_columns = st.columns(len(data_list), gap='large')
-        for n, c in enumerate(cols_columns):
-                with c:
-                    df = data_list[n].copy()
-                    df = df.drop_duplicates()
-                    if "&" in df['corpus'].iloc[0]:
-                        ds = "Covid & ElectionsSM"
-                        df['corpus'] = ds
-                    ds = df['corpus'].iloc[0]
-                    #st.dataframe(df)
-                    if not 'neutral' in df['ethos_label'].unique():
-                        df['ethos_label'] = df['ethos_label'].map(ethos_mapping)
-                    if not 'negative' in df['pathos_label'].unique():
-                        df['pathos_label'] = df['pathos_label'].map(valence_mapping)
-
-                    # all df targets
-                    df_target_all = pd.DataFrame(df[df.ethos_label.isin( ['attack', 'support'] )]['ethos_label'].value_counts(normalize = True).round(2)*100)
-                    df_target_all.columns = ['percentage']
-                    df_target_all.reset_index(inplace=True)
-                    df_target_all.columns = ['label', 'percentage']
-                    df_target_all = df_target_all.sort_values(by = 'label')
-                    df_target_all_att = df_target_all[df_target_all.label == 'attack']['percentage'].iloc[0]
-                    df_target_all_sup = df_target_all[df_target_all.label == 'support']['percentage'].iloc[0]
-
-                    # chosen target df
-
-                    df_target = pd.DataFrame(df[ (df.Target == str(selected_target)) & \
-                    (df.ethos_label.isin( ['attack', 'support'] )) ]['ethos_label'].value_counts(normalize = True).round(2)*100)
-                    df_target.columns = ['percentage']
-                    df_target.reset_index(inplace=True)
-                    df_target.columns = ['label', 'percentage']
-
-                    if len(df_target) == 1:
-                      if not ("attack" in df_target.label.unique()):
-                          df_target.loc[len(df_target)] = ["attack", 0]
-                      elif not ("support" in df_target.label.unique()):
-                          df_target.loc[len(df_target)] = ["support", 0]
-                    df_target = df_target.sort_values(by = 'label')
-                    df_target_att = df_target[df_target.label == 'attack']['percentage'].iloc[0]
-                    df_target_sup = df_target[df_target.label == 'support']['percentage'].iloc[0]
-
-                    add_spacelines(1)
-                    df_target.columns = ['ethos', 'percentage']
-                    df_dist_ethos = df_target.sort_values(by = 'ethos')
-                    df_dist_ethos['corpus'] = ds
-                    if "&" in ds:
-                        ds = "Covid & ElectionsSM"
-                        df_dist_ethos['corpus'] = ds
-
-                    sns.set(font_scale=1.35, style='whitegrid')
-                    f_dist_ethos = sns.catplot(kind='bar', data = df_dist_ethos, height=4, aspect=1.4, legend = False,
-                                    x = 'ethos', y = 'percentage', hue = 'ethos', dodge=False,
-                                    palette = {'attack':'#BB0000', 'neutral':'#949494', 'support':'#026F00'})
-                    vals_senti = df_dist_ethos['percentage'].values.round(1)
-                    plt.title(f"Ethos towards **{str(selected_target)}** in {df_dist_ethos.corpus.iloc[0]} \n")
-                    plt.xlabel('')
-                    plt.ylim(0, 105)
-                    plt.yticks(np.arange(0, 105, 20))
-                    for index_senti, v in enumerate(vals_senti):
-                        plt.text(x=index_senti , y = v+1 , s=f"{v}%" , fontdict=dict(ha='center'))
-
-                    add_spacelines(1)
-                    col1, col2 = st.columns([3, 2])
-                    with col2:
-                        st.write("**Hero score** 👑")
-                        col2.metric(str(selected_target), str(df_target_sup)+ str('%'), str(round((df_target_sup - df_target_all_sup),  1))+ str(' p.p.'),
-                        help = f"Percentage of social media posts that support *{selected_target}* and the difference from the average.") # round(((df_target_sup / df_target_all_sup) * 100) - 100, 1)
-
-                    with col1:
-                        st.write("**Villain score** 👎")
-                        col1.metric(str(selected_target), str(df_target_att)+ str('%'), str(round((df_target_att - df_target_all_att),  1))+ str(' p.p.'), delta_color="inverse",
-                        help = f"Percentage of social media posts that attack *{selected_target}* and the difference from the average.")
-                    add_spacelines(1)
-
-                    st.pyplot(f_dist_ethos)
-  
 
     with heroes_tab_explore:
         st.write('### Cases')
@@ -5479,7 +5369,7 @@ with st.sidebar:
             contents_radio_an_cat_unit = st.radio("Next choose", ['Target-Based Analysis'] )
             st.write(" ******************************* ")
             st.write("#### Statistical module")
-            contents_radio3 = st.radio("Statistic", [ 'Heroes & villains', ], label_visibility='collapsed') # '(Anti)-heroes',
+            contents_radio3 = st.radio("Statistic", [ 'Heroes & villains Frequency', "Heroes & villains Score-1", "Heroes & villains Score-2", "Heroes & villains Profile", "Heroes & villains WordCloud"], label_visibility='collapsed') # '(Anti)-heroes',
             #contents_radio3 = st.radio("Statistic", [ 'Heroes & villainses', "Profiles"]) # '(Anti)-heroes',
         else:
             contents_radio_an_cat_unit = st.radio("Next choose", [ 'Relation' ])
@@ -5780,8 +5670,40 @@ else:
         distribution_plot_compare_logos(data_list = corpora_list, an_type = contents_radio_an_cat)
 
 
-    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == 'Heroes & villains':
+    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == 'Profiles':
+        st.info("Module not available currently for the Comparative Corpora Analysis type")
+        st.stop()
+        st.write("### Profiles")
+        rhetoric_dims = ['ethos']
+        add_spacelines(2)
+        selected_rhet_dim = st.selectbox("Choose a rhetoric category of profiles", rhetoric_dims, index=0)
+        add_spacelines(1)
+        if selected_rhet_dim != 'logos':
+            selected_rhet_dim = selected_rhet_dim.replace("ethos", "ethos_label").replace("pathos", "pathos_label")
 
+        if len(corpora_list) == 6:
+            cols_columns1, cols_columns2, cols_columns3 = st.tabs([corpora_list[0].corpus.iloc[0], corpora_list[2].corpus.iloc[0], corpora_list[-2].corpus.iloc[0]])
+            with cols_columns1:
+                #st.write(corpora_list[0])
+                ProfilesEntity_compare(data_list = corpora_list[:1], selected_rhet_dim = selected_rhet_dim)
+            with cols_columns2:
+                ProfilesEntity_compare(data_list = corpora_list[2:3], selected_rhet_dim = selected_rhet_dim)
+            with cols_columns3:
+                ProfilesEntity_compare(data_list = corpora_list[-2:-1], selected_rhet_dim = selected_rhet_dim)
+
+        elif len(corpora_list) == 4:
+            cols_columns1, cols_columns2 = st.tabs([corpora_list[0].corpus.iloc[0], corpora_list[-2].corpus.iloc[0]])
+            with cols_columns1:
+                #st.write(corpora_list[0])
+                ProfilesEntity_compare(data_list = corpora_list[:1], selected_rhet_dim = selected_rhet_dim)
+            with cols_columns2:
+                ProfilesEntity_compare(data_list = corpora_list[-2:-1], selected_rhet_dim = selected_rhet_dim)
+
+        elif len(corpora_list) == 2:
+            ProfilesEntity_compare(data_list = corpora_list[:1], selected_rhet_dim = selected_rhet_dim)
+
+
+    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == 'Heroes & villains':
         corpora_list_ethos = corpora_list[::2]
         corpora_list_ethos_df = pd.concat( corpora_list_ethos, axis=0, ignore_index = True )
         corp_new = "&\n ".join( corpora_list_ethos_df['corpus'].unique() )
@@ -5797,11 +5719,269 @@ else:
         corpora_list = []
         corpora_list.append(corpora_list_ethos_df)
         corpora_list.append(corpora_list_logos_df)
-        TargetHeroScores_compare_scor2(data_list = corpora_list[:1], singl_an = False)      
+        TargetHeroScores_compare(data_list = corpora_list[:1], singl_an = False)
+
+    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == 'Heroes & villains Frequency':
+        corpora_list_ethos = corpora_list[::2]
+        corpora_list_ethos_df = pd.concat( corpora_list_ethos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_ethos_df['corpus'].unique() )
+        corpora_list_ethos_df['corpus'] = corp_new
+        #st.write(corpora_list_ethos_df, len(corpora_list_ethos))
+
+        corpora_list_logos = corpora_list[1::2]
+        corpora_list_logos_df = pd.concat( corpora_list_logos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_logos_df['corpus'].unique() )
+        corpora_list_logos_df['corpus'] = corp_new
+        #st.write(corpora_list_logos_df, len(corpora_list_logos))
+        #st.stop()
+        corpora_list = []
+        corpora_list.append(corpora_list_ethos_df)
+        corpora_list.append(corpora_list_logos_df)
+        TargetHeroScores_compare_freq(data_list = corpora_list[:1], singl_an = False)
+
+    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains Score-1":
+        corpora_list_ethos = corpora_list[::2]
+        corpora_list_ethos_df = pd.concat( corpora_list_ethos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_ethos_df['corpus'].unique() )
+        corpora_list_ethos_df['corpus'] = corp_new
+        #st.write(corpora_list_ethos_df, len(corpora_list_ethos))
+
+        corpora_list_logos = corpora_list[1::2]
+        corpora_list_logos_df = pd.concat( corpora_list_logos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_logos_df['corpus'].unique() )
+        corpora_list_logos_df['corpus'] = corp_new
+        #st.write(corpora_list_logos_df, len(corpora_list_logos))
+        #st.stop()
+        corpora_list = []
+        corpora_list.append(corpora_list_ethos_df)
+        corpora_list.append(corpora_list_logos_df)
+        TargetHeroScores_compare_scor(data_list = corpora_list[:1], singl_an = False)
+
+
+    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains Score-2":
+        corpora_list_ethos = corpora_list[::2]
+        corpora_list_ethos_df = pd.concat( corpora_list_ethos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_ethos_df['corpus'].unique() )
+        corpora_list_ethos_df['corpus'] = corp_new
+        #st.write(corpora_list_ethos_df, len(corpora_list_ethos))
+
+        corpora_list_logos = corpora_list[1::2]
+        corpora_list_logos_df = pd.concat( corpora_list_logos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_logos_df['corpus'].unique() )
+        corpora_list_logos_df['corpus'] = corp_new
+        #st.write(corpora_list_logos_df, len(corpora_list_logos))
+        #st.stop()
+        corpora_list = []
+        corpora_list.append(corpora_list_ethos_df)
+        corpora_list.append(corpora_list_logos_df)
+        TargetHeroScores_compare_scor2(data_list = corpora_list[:1], singl_an = False)
+
+
+    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains Profile":
+        corpora_list_ethos = corpora_list[::2]
+        corpora_list_ethos_df = pd.concat( corpora_list_ethos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_ethos_df['corpus'].unique() )
+        corpora_list_ethos_df['corpus'] = corp_new
+        #st.write(corpora_list_ethos_df, len(corpora_list_ethos))
+
+        corpora_list_logos = corpora_list[1::2]
+        corpora_list_logos_df = pd.concat( corpora_list_logos, axis=0, ignore_index = True )
+        corp_new = "&\n ".join( corpora_list_logos_df['corpus'].unique() )
+        corpora_list_logos_df['corpus'] = corp_new
+        #st.write(corpora_list_logos_df, len(corpora_list_logos))
+        #st.stop()
+        corpora_list = []
+        corpora_list.append(corpora_list_ethos_df)
+        corpora_list.append(corpora_list_logos_df)
+        TargetHeroScores_compare_prof(data_list = corpora_list[:1], singl_an = False)
 
 
 
-    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains":
+
+    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains WordCloud":
+        corpora_list_ethos = corpora_list[::2]
+        corpora_list_ethos_df = pd.concat( corpora_list_ethos, axis=0, ignore_index = True )
+
+        corpora_list = []
+        corpora_list.append(corpora_list_ethos_df)
+
+        rhetoric_dims = ['ethos',]
+
+        selected_rhet_dim = st.selectbox("Choose a rhetoric category for a WordCloud", rhetoric_dims, index=0)
+
+
+        ccol1, ccol2 = st.columns(2)
+        with ccol1:
+            st.write("Choose category of the target of ethotic statements")
+            box_direct = st.checkbox("direct ethos", value = False)
+            box_3rd = st.checkbox("3rd party ethos", value = True)
+        with ccol2:
+            label_cloud = st.radio("Choose a label for words in WordCloud", ('attack', 'support'))
+        selected_rhet_dim = selected_rhet_dim.replace("ethos", "ethos_label")
+        label_cloud = label_cloud.replace("attack / negative", "attack").replace("support / positive", "support")
+        add_spacelines(1)
+
+
+        target_shared = {}
+
+        n = 0
+        for data in corpora_list:
+            df = data.copy()
+
+            if not 'attack' in df['ethos_label'].unique():
+                df['ethos_label'] = df['ethos_label'].map(ethos_mapping)
+            df["Target"] = df["Target"].astype('str')
+            df = df[ (df.Target != 'nan') & (df.Target != '') & (df.ethos_label != 'neutral') ]
+            df["Target"] = df["Target"].str.replace('Government', 'government')
+            target_shared[n] = set(df["Target"].unique())
+
+            if box_direct and not box_3rd:
+                targets_limit = df['Target'].dropna().unique()
+                targets_limit = [t for t in targets_limit if "@" in t]
+                df = df[df.Target.isin(targets_limit)]
+                target_shared[n] = set(df["Target"].unique())
+
+            elif not box_direct and box_3rd:
+                targets_limit = df['Target'].dropna().unique()
+                targets_limit = [t for t in targets_limit if not "@" in t]
+                df = df[df.Target.isin(targets_limit)]
+                target_shared[n] = set(df["Target"].unique())
+
+            n+=1
+
+        target_shared_list = list(target_shared[0] )
+        selected_target = st.selectbox("Choose a target entity you would like to analyse", target_shared_list )
+        sel_tar = True
+        add_spacelines(1)
+
+        threshold_cloud = st.slider('Select a precision value (threshold) for words in WordCloud', 0, 100, 51)
+        st.info(f'Selected precision: **{threshold_cloud}**')
+        add_spacelines(1)
+
+        box_stopwords = st.checkbox( "Enable stop words", value = False )
+
+
+        cols_columns = st.columns( int( len(corpora_list) ) )
+        dict_cond = {}
+        nn = 0
+        for n, c in enumerate(cols_columns):
+            with c:
+                add_spacelines(1)
+                AntiHeroWordCloud_compare(corpora_list[nn:nn+1], rhetoric_dims = ['ethos'], box_stopwords = box_stopwords,
+                    selected_rhet_dim = selected_rhet_dim, label_cloud=label_cloud, threshold_cloud=threshold_cloud, targeted = sel_tar, selected_target = selected_target)
+                nn += 1
+
+
+    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains WordCloud":
+        #add_spacelines(1)
+        #st.write("Choose category of the target of ethotic statements")
+        #box_direct = st.checkbox("direct ethos", value = False)
+        #box_3rd = st.checkbox("3rd party ethos", value = True)
+        #TargetHeroScores_compare_word(data_list = corpora_list[::2], singl_an = False, chbox_3rd = box_3rd, chbox_direct = box_direct)
+
+        rhetoric_dims = ['ethos',]
+        corpora_list = corpora_list[::2]
+
+        selected_rhet_dim = st.selectbox("Choose a rhetoric category for a WordCloud", rhetoric_dims, index=0)
+
+
+        ccol1, ccol2 = st.columns(2)
+        with ccol1:
+            st.write("Choose category of the target of ethotic statements")
+            box_direct = st.checkbox("direct ethos", value = False)
+            box_3rd = st.checkbox("3rd party ethos", value = True)
+        with ccol2:
+            label_cloud = st.radio("Choose a label for words in WordCloud", ('attack', 'support'))
+        selected_rhet_dim = selected_rhet_dim.replace("ethos", "ethos_label")
+        label_cloud = label_cloud.replace("attack / negative", "attack").replace("support / positive", "support")
+        add_spacelines(1)
+
+
+        target_shared = {}
+
+        n = 0
+        for data in corpora_list:
+            df = data.copy()
+
+            if not 'attack' in df['ethos_label'].unique():
+                df['ethos_label'] = df['ethos_label'].map(ethos_mapping)
+            df["Target"] = df["Target"].astype('str')
+            df = df[ (df.Target != 'nan') & (df.Target != '') & (df.ethos_label != 'neutral') ]
+            df["Target"] = df["Target"].str.replace('Government', 'government')
+            target_shared[n] = set(df["Target"].unique())
+
+            if box_direct and not box_3rd:
+                targets_limit = df['Target'].dropna().unique()
+                targets_limit = [t for t in targets_limit if "@" in t]
+                df = df[df.Target.isin(targets_limit)]
+                target_shared[n] = set(df["Target"].unique())
+
+            elif not box_direct and box_3rd:
+                targets_limit = df['Target'].dropna().unique()
+                targets_limit = [t for t in targets_limit if not "@" in t]
+                df = df[df.Target.isin(targets_limit)]
+                target_shared[n] = set(df["Target"].unique())
+
+            n+=1
+
+        #target_shared_list = list(target_shared[0] )
+        if len( list(target_shared.keys()) )  > 1:
+            target_shared_list = []
+            kk = list(target_shared.keys())
+            target_shared_list = list( set(target_shared[kk[0]]).intersection(set(target_shared[kk[1]])) )
+        selected_target = st.selectbox("Choose a target entity you would like to analyse", target_shared_list )
+        sel_tar = True
+        add_spacelines(1)
+
+        threshold_cloud = st.slider('Select a precision value (threshold) for words in WordCloud', 0, 100, 51)
+        st.info(f'Selected precision: **{threshold_cloud}**')
+        add_spacelines(1)
+
+        box_stopwords = st.checkbox( "Enable stop words", value = False )
+
+
+        cols_columns = st.columns( int( len(corpora_list) ) )
+        dict_cond = {}
+        nn = 0
+        for n, c in enumerate(cols_columns):
+            with c:
+                add_spacelines(1)
+                AntiHeroWordCloud_compare(corpora_list[nn:nn+1], rhetoric_dims = ['ethos'], box_stopwords = box_stopwords,
+                    selected_rhet_dim = selected_rhet_dim, label_cloud=label_cloud, threshold_cloud=threshold_cloud, targeted = sel_tar, selected_target = selected_target)
+                nn += 1
+
+
+    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == 'Heroes & villains':
+        if len(corpora_list) == 4:
+            corpora_list0 = corpora_list[0]
+            corpora_list1 = corpora_list[-2]
+            corpora_list = [corpora_list0, corpora_list1]
+        elif len(corpora_list) == 2:
+            corpora_list0 = corpora_list[0]
+            corpora_list = corpora_list0
+        TargetHeroScores_compare(data_list = corpora_list, singl_an = False)
+
+    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == 'Heroes & villains Frequency':
+        if len(corpora_list) == 4:
+            corpora_list0 = corpora_list[0]
+            corpora_list1 = corpora_list[-2]
+            corpora_list = [corpora_list0, corpora_list1]
+        elif len(corpora_list) == 2:
+            corpora_list0 = corpora_list[0]
+            corpora_list = corpora_list0
+        TargetHeroScores_compare_freq(data_list = corpora_list, singl_an = False)
+
+    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains Score-1":
+        if len(corpora_list) == 4:
+            corpora_list0 = corpora_list[0]
+            corpora_list1 = corpora_list[-2]
+            corpora_list = [corpora_list0, corpora_list1]
+        elif len(corpora_list) == 2:
+            corpora_list0 = corpora_list[0]
+            corpora_list = corpora_list0
+        TargetHeroScores_compare_scor(data_list = corpora_list, singl_an = False)
+
+    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains Score-2":
         if len(corpora_list) == 4:
             corpora_list0 = corpora_list[0]
             corpora_list1 = corpora_list[-2]
@@ -5810,6 +5990,65 @@ else:
             corpora_list0 = corpora_list[0]
             corpora_list = corpora_list0
         TargetHeroScores_compare_scor2(data_list = corpora_list, singl_an = False)
+
+
+    elif contents_radio_type == 'Comparative Corpora Analysis' and contents_radio3 == "Heroes & villains Profile":
+        if len(corpora_list) == 4:
+            corpora_list0 = corpora_list[0]
+            corpora_list1 = corpora_list[-2]
+            corpora_list = [corpora_list0, corpora_list1]
+        elif len(corpora_list) == 2:
+            corpora_list0 = corpora_list[0]
+            corpora_list = corpora_list0
+        TargetHeroScores_compare_prof(data_list = corpora_list, singl_an = False)
+
+
+
+    elif contents_radio_type != 'Comparative Corpora Analysis' and contents_radio3 == 'Profiles':
+        corpora_list_ent = []
+        df_user_et = corpora_list[0]
+        df_user_log = corpora_list[1]
+        #st.write(df_user_log)
+        df_user_et_src = set( df_user_et.source.dropna().astype('str').str.replace("@", "").str.strip().unique() )
+        df_user_log_src = set( df_user_log.speaker_premise.dropna().astype('str').str.replace(":", "").str.replace("@", "").str.strip().unique() )
+        df_user_src = df_user_et_src.intersection(df_user_log_src)
+
+        df_user_et = df_user_et[df_user_et.source.dropna().astype('str').str.replace("@", "").str.strip().isin(df_user_src) ]
+        df_user_log = df_user_log[df_user_log.speaker_premise.dropna().astype('str').str.replace(":", "").str.replace("@", "").str.strip().isin(df_user_src) ]
+        df_ents = pd.concat([df_user_log, df_user_et], axis = 0, ignore_index = True)
+
+        src_logp = df_ents.groupby('speaker_premise', as_index=False).size()
+        #src_logp = src_logp[src_logp['size'] > 2]
+        src_logp = df_ents.speaker_premise.dropna().astype('str').str.strip().unique()
+        src_et = df_ents.groupby('source', as_index=False).size()
+        #src_et = src_et[src_et['size'] > 2]
+        src_et = src_et.source.dropna().astype('str').str.strip().unique()
+        src_list = list( set(src_et).union(set(src_logp) ) )
+        src_list = list(set(str(e).replace("@", "") for e in src_list))
+        if 'look' in src_list:
+            src_list.remove('look')
+        st.write("### Speaker Analysis")
+        add_spacelines(2)
+        src = st.selectbox("Choose an entity for analysis", src_list, index=0)
+
+        df_user_et.source = df_user_et.source.dropna().astype('str').str.replace("@", "").str.strip()
+        df_user_log.speaker_premise = df_user_log.speaker_premise.dropna().astype('str').str.replace(":", "").str.replace("@", "").str.strip()
+        df_user_et = df_user_et[df_user_et.source == src]
+        df_user_log = df_user_log[(df_user_log.speaker_premise == src) ] #  (df_user_log.speaker_conclusion == src) |
+
+        try:
+            ds = df_user_et.corpus.iloc[0]
+        except:
+            ds = df_user_log.corpus.iloc[0]
+        ds = ds + " - **" + str(src) +"**"
+        df_user_et.corpus = ds
+        df_user_log.corpus = ds
+        if len(df_user_et) > 0:
+            corpora_list_ent.append(df_user_et)
+        if len(df_user_log) > 0:
+            corpora_list_ent.append(df_user_log)
+        distribution_plot_compare_logos(data_list = corpora_list_ent, an_type = contents_radio_an_cat)
+
 
 
     elif contents_radio3 == 'WordCloud' and contents_radio_type == 'Comparative Corpora Analysis':
@@ -5879,5 +6118,6 @@ else:
                         st.dataframe(dd)
 
         
+
     elif contents_radio_type == 'Single Corpus Analysis' and contents_radio3 == 'WordCloud':
         generateWordCloud(corpora_list, rhetoric_dims = ['ethos', 'logos', 'pathos'], an_type = contents_radio_an_cat)
