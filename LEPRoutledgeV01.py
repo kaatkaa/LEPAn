@@ -20,7 +20,6 @@ colors_log = {'Ethos Attack':'#FF4444', 'No Ethos':'#022D96', 'Ethos Support':'#
 
 # imports
 import streamlit as st
-from PIL import Image
 from collections import Counter
 import pandas as pd
 pd.set_option("max_colwidth", 400)
@@ -42,16 +41,11 @@ import warnings
 import plotly.express as px
 import plotly
 import plotly.graph_objects as go
-from PIL import Image, ImageDraw, ImageFont
 
 import wordcloud
 from wordcloud import WordCloud, STOPWORDS
 
-import nltk
-from nltk.text import Text
-
 # functions
-
 ethos_mapping = {0: 'neutral', 1: 'support', 2: 'attack'}
 valence_mapping = {0: 'neutral p', 1: 'positive', 2: 'negative'}
 
