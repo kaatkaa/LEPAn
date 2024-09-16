@@ -185,27 +185,8 @@ def MainPage():
     #add_spacelines(2)
     with st.expander("Read abstract"):
         add_spacelines(1)
-        st.write("""Digitalisation is rapidly transforming our societies, transforming the dynamics of
-                    our interactions, transforming the culture of our debates. One of the major threats
-                    associated with digitalisation – which manifests itself in online misbehaviour such
-                    as hate speech, fake news, echo chambers, cyber tribalism, filter bubbles and so on -
-                    is a violation of the basic condition for trusting and being trustworthy. Thus, when
-                    we calibrate our focus on this critical requirement for constructive, reasonable and
-                    responsible interactions, then ethos, including ethotic misbehaviour, becomes cen-
-                    tral for the study of rhetoric. If we are furthermore keen to capture the dynamics
-                    of scaled-up network of communication, which is the constitutive feature of inter-
-                    actions in the digital society, then the new approach to the study of rhetoric: its
-                    subject-matter, methodology and goals, has to be taken. This paper presents a new
-                    research program, called The New Ethos, which employs AI-based technology to
-                    investigate rhetoric at scale, that is, distributed and digitised communication net-
-                    works in which volume of information and velocity of message proliferation take
-                    on a hitherto unknown scale. We present Rhetoric Analytics, a suit of tools that
-                    compute and visualise statistical patterns, trends and tendencies in rhetorical use
-                    of language. This allows us to explore, for example, how Donald Trump and Hilary
-                    Clinton build their communication to win elections and how social media users re-
-                    act to their rhetorical strategies. This opens the path to comprehend the present
-                    and future of human communication and human condition. By unifying philosophy,
-                    linguistics and Artificial Intelligence, this goal becomes closer than ever before.""")
+        st.write("This paper demonstrates LEPAn, **L**ogos-**E**thos-**P**athos Analytics, which offers analysis of statistical patterns in the use of rhetorical arguments in public discussions on polarised issues. It is available at **https://newethos.org/technologies/**")
+
 
     with st.container():
         df_sum = pd.DataFrame(
