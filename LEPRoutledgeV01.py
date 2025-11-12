@@ -3801,8 +3801,8 @@ def distribution_plot_compare_logos(data_list, an_type):
         for i, k in enumerate(dict_cond.keys()):
             dff_selected = dff_selected[ dff_selected[str(k)].isin(dict_cond[k]) ]
         add_spacelines(2)
-        dff_selected = dff_selected.sort_values(by = select_columns).reset_index(drop=True).dropna(how='all', axis=1)
-        st.dataframe(dff_selected, width = None)
+        dff_selected = dff_selected.reset_index(drop=True).dropna(how='all', axis=1)
+        st.dataframe(dff_selected)
         st.write(f"No. of cases: {len(dff_selected)}.")
 
 
@@ -4985,3 +4985,4 @@ else:
 
     elif contents_radio_type == 'Single Corpus Analysis' and contents_radio3 == 'WordCloud':
         generateWordCloud(corpora_list, rhetoric_dims = ['ethos', 'logos', 'pathos'], an_type = contents_radio_an_cat)
+
