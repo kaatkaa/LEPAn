@@ -1346,6 +1346,16 @@ def TargetHeroScores_compare_freq(data_list, singl_an = True):
         dff = df[dff_columns].copy()
         dff['pathos_name'] = dff['pathos_name'].str.replace("al p", 'al')
         dff = dff[dff.pathos_name != 'nan']
+
+        search_ling = st.checkbox("Linguistic search of cases")
+        if search_ling:
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            try:
+                dff = dff[dff['locution'].str.contains(search_ling_input) ]
+            except:
+                dff = dff[dff['sentence'].str.contains(search_ling_input) ]
+        add_spacelines(2)
+        
         select_columns = st.multiselect("Choose columns for specifying conditions", dff_columns, dff_columns[-2])
         cols_columns = st.columns(len(select_columns))
         dict_cond = {}
@@ -1726,6 +1736,17 @@ def TargetHeroScores_compare_scor(data_list, singl_an = True):
         dff = df[dff_columns].copy()
         dff = dff[dff.pathos_name != 'nan']
         dff['pathos_name'] = dff['pathos_name'].str.replace("al p", 'al')
+
+        search_ling = st.checkbox("Linguistic search of cases")
+        if search_ling:
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            try:
+                dff = dff[dff['locution'].str.contains(search_ling_input) ]
+            except:
+                dff = dff[dff['sentence'].str.contains(search_ling_input) ]
+        add_spacelines(2)
+        
         select_columns = st.multiselect("Choose columns for specifying conditions", dff_columns, dff_columns[-2])
         cols_columns = st.columns(len(select_columns))
         dict_cond = {}
@@ -2156,6 +2177,17 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
         dff = df[dff_columns].copy()
         dff = dff[dff.pathos_name != 'nan']
         dff['pathos_name'] = dff['pathos_name'].str.replace("al p", 'al')
+
+        search_ling = st.checkbox("Linguistic search of cases")
+        if search_ling:
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            try:
+                dff = dff[dff['locution'].str.contains(search_ling_input) ]
+            except:
+                dff = dff[dff['sentence'].str.contains(search_ling_input) ]
+        add_spacelines(2)
+            
         select_columns = st.multiselect("Choose columns for specifying conditions", dff_columns, dff_columns[-2])
         cols_columns = st.columns(len(select_columns))
         dict_cond = {}
@@ -2490,10 +2522,21 @@ def TargetHeroScores_compare_prof(data_list, singl_an = True):
 
     with explore_tab:
         add_spacelines()
-        select_columns = st.multiselect("Choose columns for specifying conditions", cols, cols[1])
         dff = df[dff_columns].copy()
         dff['pathos_name'] = dff['pathos_name'].str.replace("al p", 'al')
         dff = dff[ dff.pathos_name != 'nan' ]
+
+        search_ling = st.checkbox("Linguistic search of cases")
+        if search_ling:
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            try:
+                dff = dff[dff['locution'].str.contains(search_ling_input) ]
+            except:
+                dff = dff[dff['sentence'].str.contains(search_ling_input) ]
+        add_spacelines(2)
+            
+        select_columns = st.multiselect("Choose columns for specifying conditions", cols, cols[1])
         cols_columns = st.columns(len(select_columns))
         dict_cond = {}
         for n, c in enumerate(cols_columns):
@@ -3778,6 +3821,17 @@ def distribution_plot_compare_logos(data_list, an_type):
 
         dff = df[dff_columns].copy()
         dff['pathos_name'] = dff['pathos_name'].str.replace("al p", 'al')
+
+        search_ling = st.checkbox("Linguistic search of cases")
+        if search_ling:
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for")
+            try:
+                dff = dff[dff['locution'].str.contains(search_ling_input) ]
+            except:
+                dff = dff[dff['sentence'].str.contains(search_ling_input) ]
+        add_spacelines(2)
+            
         select_columns = st.multiselect("Choose columns for specifying conditions", dff_columns, dff_columns[0])
 
         dff['logos'] = dff['logos'].str.replace('neutral', 'nan')
@@ -4393,7 +4447,7 @@ with st.sidebar:
                 cor1_src = [str(s).replace('@', '') for s in cor1_src]
                 cor1['Target'] = cor1['Target'].astype('str')
                 cor1['source'] = cor1['source'].astype('str').apply(lambda x: ["@"+str(x) if not "@" in x else x][0])
-                cor1['Target'] = cor1['Target'].apply(lambda x: ["@"+str(x) if (not "@" in x and x in cor1_src) else x][0])
+                #cor1['Target'] = cor1['Target'].apply(lambda x: ["@"+str(x) if (not "@" in x and x in cor1_src) else x][0])
                 cor1['corpus'] = "PolarIs1"
                 cor1["Target"] = cor1["Target"].str.replace('Government', 'government')
                 cor1['kind'] = "ethos"
@@ -4487,7 +4541,7 @@ with st.sidebar:
             cor1['Target'] = cor1['Target'].astype('str')
             cor1["Target"] = cor1["Target"].str.replace('Government', 'government')
             cor1['source'] = cor1['source'].astype('str').apply(lambda x: ["@"+str(x) if not "@" in x else x][0])
-            cor1['Target'] = cor1['Target'].apply(lambda x: ["@"+str(x) if (not "@" in x and x in cor1_src) else x][0])
+            #cor1['Target'] = cor1['Target'].apply(lambda x: ["@"+str(x) if (not "@" in x and x in cor1_src) else x][0])
             cor1['corpus'] = "PolarIs1" # Ethos
             cor1['kind'] = "ethos"
             corpora_list_et[cor1['corpus'].iloc[0]] = cor1
