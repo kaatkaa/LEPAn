@@ -1349,7 +1349,7 @@ def TargetHeroScores_compare_freq(data_list, singl_an = True):
 
         search_ling = st.checkbox("Linguistic search of cases")
         if search_ling:
-            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for", key="search_ling_input_1" )
             try:
                 dff = dff[dff['locution'].str.contains(search_ling_input) ]
             except:
@@ -1739,8 +1739,7 @@ def TargetHeroScores_compare_scor(data_list, singl_an = True):
 
         search_ling = st.checkbox("Linguistic search of cases")
         if search_ling:
-            search_ling_input = st.text_input("Enter the phrase to search for")
-            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for", key="search_ling_input_2" )
             try:
                 dff = dff[dff['locution'].str.contains(search_ling_input) ]
             except:
@@ -2180,8 +2179,7 @@ def TargetHeroScores_compare_scor2(data_list, singl_an = True):
 
         search_ling = st.checkbox("Linguistic search of cases")
         if search_ling:
-            search_ling_input = st.text_input("Enter the phrase to search for")
-            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for", key="search_ling_input_3" )
             try:
                 dff = dff[dff['locution'].str.contains(search_ling_input) ]
             except:
@@ -2528,8 +2526,7 @@ def TargetHeroScores_compare_prof(data_list, singl_an = True):
 
         search_ling = st.checkbox("Linguistic search of cases")
         if search_ling:
-            search_ling_input = st.text_input("Enter the phrase to search for")
-            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for", key="search_ling_input_4" )
             try:
                 dff = dff[dff['locution'].str.contains(search_ling_input) ]
             except:
@@ -3824,8 +3821,7 @@ def distribution_plot_compare_logos(data_list, an_type):
 
         search_ling = st.checkbox("Linguistic search of cases")
         if search_ling:
-            search_ling_input = st.text_input("Enter the phrase to search for")
-            search_ling_input = st.text_input("Enter the phrase to search for")
+            search_ling_input = st.text_input("Enter the phrase to search for", key="search_ling_input_5" )
             try:
                 dff = dff[dff['locution'].str.contains(search_ling_input) ]
             except:
